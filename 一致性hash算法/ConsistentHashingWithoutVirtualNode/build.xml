@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+
+<project name="java_programs" default="run">
+	<property environment="env"/>
+
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="classes.dir" value="${basedir}/classes"/>
+
+	<property name="lib.common.dir" value="${basedir}/../lib"/>
+	<property name="java.lib.dir" value="${env.JAVA_HOME}/lib"/>
+
+	<!-- RUN target, and real running target list -->
+	<target name="run" depends="compile,init">
+		<java classname="ConsistentHashingWithoutVirtualNode" fork="true" dir=".">
+			<classpath refid="classpath"/>
+			<classpath>
+				<pathelement path="${classes.dir}"/>
+			</classpath>
+		</java>
+	</target>
+
+	<!--  run depends targets  -->
+	<target name="init">
+		<mkdir dir="${src.dir}"/>
+		<mkdir dir="${classes.dir}"/>
+		<echo level="info">Create standard dir done.</echo>
+	</target>
+
+	<target name="compile" depends="init">
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" includes="*java" debug="on">
+			<classpath refid="classpath"/>
+		</javac>
+	</target>
+
+	<!-- run enviroment set -->
+	<path id="classpath">
+		<fileset dir="${java.lib.dir}">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${lib.common.dir}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="clean">
+		<delete >
+			<fileset dir="${classes.dir}" includes="**/*.class"/>
+		</delete>
+	</target>
+
+</project>
